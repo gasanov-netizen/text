@@ -11,8 +11,6 @@ http_archive(
         "https://github.com/unicode-org/icu/archive/release-77-1.zip",
     ],
     build_file = "//third_party/icu:BUILD.bzl",
-    patches = ["//third_party/icu:udata.patch"],
-    patch_args = ["-p1"],
 )
 
 http_archive(
