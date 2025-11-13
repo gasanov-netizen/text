@@ -4,13 +4,15 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "icu",
-    strip_prefix = "icu-release-77-1",
-    sha256 = "e424ba5282d95ad38b52639a08fb82164f0b0cbd7f17b53ae16bf14f8541855f",
+    strip_prefix = "icu-release-64-2",
+    sha256 = "dfc62618aa4bd3ca14a3df548cd65fe393155edd213e49c39f3a30ccd618fc27",
     urls = [
-        "https://storage.googleapis.com/mirror.tensorflow.org/github.com/unicode-org/icu/archive/release-77-1.zip",
-        "https://github.com/unicode-org/icu/archive/release-77-1.zip",
+        "https://storage.googleapis.com/mirror.tensorflow.org/github.com/unicode-org/icu/archive/release-64-2.zip",
+        "https://github.com/unicode-org/icu/archive/release-64-2.zip",
     ],
     build_file = "//third_party/icu:BUILD.bzl",
+    patches = ["//third_party/icu:udata.patch"],
+    patch_args = ["-p1"],
 )
 
 http_archive(
