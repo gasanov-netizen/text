@@ -1,195 +1,111 @@
-# Code that exposes C++ libraries to Python via pybind11.
-
-# Placeholder: load py_test
-load("@org_tensorflow//tensorflow:tensorflow.bzl", "pybind_extension")
+package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
-package(default_visibility = [
-    "//nlp/sage/nlu/features/python:__pkg__",
-    "//nlp/semantic_parsing/learning/neural/portable/tools/release:__pkg__",
-    "//tensorflow_text:__subpackages__",
-])
-
-pybind_extension(
-    name = "tflite_registrar",
-    srcs = [
-        "tflite_registrar.cc",
-    ],
-    additional_exported_symbols = [
-        "AddByteSplit",
-        "AddByteSplitByOffsets",
-        "AddFastBertNormalize",
-        "AddFastSentencepieceDetokenize",
-        "AddFastSentencepieceTokenize",
-        "AddFastWordpieceTokenize",
-        "AddFastWordpieceDetokenize",
-        "AddNgramsStringJoin",
-        "AddRaggedTensorToTensor",
-        "AddRoundRobinGenerateMasks",
-        "AddRoundRobinTrim",
-        "AddSentenceFragmenterV2",
-        "AddUtf8Binarize",
-        "AddWhitespaceTokenize",
-        "SELECT_TFTEXT_OPS",
-    ],
-    enable_stub_generation = True,
-    module_name = "tflite_registrar",
-    pytype_srcs = [
-        "tflite_registrar.pyi",
-    ],
-    deps = [
-        "@pybind11",
-        # lite:framework tensorflow dep,
-        # lite/c:common tensorflow dep,
-        # lite/kernels:builtin_ops tensorflow dep,
-        "//tensorflow_text/core/kernels:tflite_ops",
-    ],
-)
-
-pybind_extension(
-    name = "pywrap_fast_bert_normalizer_model_builder",
+cc_binary(
+    name = "_pywrap_fast_bert_normalizer_model_builder.so",
     srcs = ["pywrap_fast_bert_normalizer_model_builder.cc"],
-    additional_exported_symbols = [
-        "BuildFastBertNormalizerModel",
-    ],
-    copts = ["-fexceptions"],
-    enable_stub_generation = True,
-    features = ["-use_header_modules"],
-    module_name = "pywrap_fast_bert_normalizer_model_builder",
-    pytype_srcs = [
-        "pywrap_fast_bert_normalizer_model_builder.pyi",
-    ],
     deps = [
         "//tensorflow_text/core/kernels:fast_bert_normalizer_model_builder",
-        "@pybind11",
+        "@pybind11//:pybind11",
     ],
+    linkshared = 1,
+    copts = ["-fPIC"],
 )
 
-py_test(
-    name = "pywrap_fast_bert_normalizer_model_builder_test",
-    srcs = ["pywrap_fast_bert_normalizer_model_builder_test.py"],
-    data = [
-        "//tensorflow_text:python/ops/test_data/fast_bert_normalizer_model.fb",
-        "//tensorflow_text:python/ops/test_data/fast_bert_normalizer_model_lower_case_nfd_strip_accents.fb",
-    ],
-    deps = [
-        ":pywrap_fast_bert_normalizer_model_builder",
-        "@release_or_nightly//:tensorflow_pkg",  # tensorflow package dep
-    ],
+py_library(
+    name = "pywrap_fast_bert_normalizer_model_builder",
+    srcs = [],
+    data = [":_pywrap_fast_bert_normalizer_model_builder.so"],
+    visibility = ["//visibility:public"],
 )
 
-pybind_extension(
-    name = "pywrap_fast_wordpiece_tokenizer_model_builder",
+cc_binary(
+    name = "_pywrap_fast_wordpiece_tokenizer_model_builder.so",
     srcs = ["pywrap_fast_wordpiece_tokenizer_model_builder.cc"],
-    additional_exported_symbols = [
-        "BuildFastWordpieceModel",
-    ],
-    copts = ["-fexceptions"],
-    data = [
-        "pywrap_fast_wordpiece_tokenizer_model_builder.pyi",
-    ],
-    enable_stub_generation = True,
-    features = ["-use_header_modules"],
-    module_name = "pywrap_fast_wordpiece_tokenizer_model_builder",
     deps = [
         "//tensorflow_text/core/kernels:fast_wordpiece_tokenizer_model_builder",
-        "@pybind11",
+        "@pybind11//:pybind11",
     ],
+    linkshared = 1,
+    copts = ["-fPIC"],
 )
 
-py_test(
-    name = "pywrap_fast_wordpiece_tokenizer_model_builder_test",
-    srcs = ["pywrap_fast_wordpiece_tokenizer_model_builder_test.py"],
-    data = [
-        "//tensorflow_text:python/ops/test_data/fast_wordpiece_tokenizer_model.fb",
-    ],
-    deps = [
-        ":pywrap_fast_wordpiece_tokenizer_model_builder",
-        "@release_or_nightly//:tensorflow_pkg",  # tensorflow package dep
-    ],
+py_library(
+    name = "pywrap_fast_wordpiece_tokenizer_model_builder",
+    srcs = [],
+    data = [":_pywrap_fast_wordpiece_tokenizer_model_builder.so"],
+    visibility = ["//visibility:public"],
 )
 
-pybind_extension(
-    name = "pywrap_phrase_tokenizer_model_builder",
-    srcs = ["pywrap_phrase_tokenizer_model_builder.cc"],
-    additional_exported_symbols = [
-        "BuildPhraseModel",
-    ],
-    copts = ["-fexceptions"],
-    enable_stub_generation = True,
-    features = ["-use_header_modules"],
-    module_name = "pywrap_phrase_tokenizer_model_builder",
-    pytype_srcs = [
-        "pywrap_phrase_tokenizer_model_builder.pyi",
-    ],
-    visibility = [
-        "//knowledge/cerebra/nlu/models/smartv2/input:__pkg__",
-        "//tensorflow_text:__subpackages__",
-    ],
-    deps = [
-        "//tensorflow_text/core/kernels:phrase_tokenizer_model_builder",
-        "@pybind11",
-    ],
-)
-
-py_test(
-    name = "pywrap_phrase_tokenizer_model_builder_test",
-    srcs = ["pywrap_phrase_tokenizer_model_builder_test.py"],
-    data = [
-        "//tensorflow_text:python/ops/test_data/phrase_tokenizer_model_test.fb",
-    ],
-    deps = [
-        ":pywrap_phrase_tokenizer_model_builder",
-        "@release_or_nightly//:tensorflow_pkg",  # tensorflow package dep
-    ],
-)
-
-pybind_extension(
-    name = "pywrap_model_converter",
+cc_binary(
+    name = "_pywrap_model_converter.so",
     srcs = ["pywrap_model_converter.cc"],
-    additional_exported_symbols = [
-        "ConvertSentencepieceModel",
-        "ConvertSentencepieceModelForDecoder",
-        "GetVocabularySize",
-    ],
-    copts = ["-fexceptions"],
-    enable_stub_generation = True,
-    features = ["-use_header_modules"],
-    module_name = "pywrap_model_converter",
-    pytype_srcs = [
-        "pywrap_model_converter.pyi",
-    ],
     deps = [
         "//tensorflow_text/core/kernels/sentencepiece:model_converter",
-        "@pybind11",
+        "@pybind11//:pybind11",
     ],
+    linkshared = 1,
+    copts = ["-fPIC"],
 )
 
-pybind_extension(
-    name = "pywrap_whitespace_tokenizer_config_builder",
+py_library(
+    name = "pywrap_model_converter",
+    srcs = [],
+    data = [":_pywrap_model_converter.so"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "_pywrap_phrase_tokenizer_model_builder.so",
+    srcs = ["pywrap_phrase_tokenizer_model_builder.cc"],
+    deps = [
+        "//tensorflow_text/core/kernels:phrase_tokenizer_model_builder",
+        "@pybind11//:pybind11",
+    ],
+    linkshared = 1,
+    copts = ["-fPIC"],
+)
+
+py_library(
+    name = "pywrap_phrase_tokenizer_model_builder",
+    srcs = [],
+    data = [":_pywrap_phrase_tokenizer_model_builder.so"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "_pywrap_whitespace_tokenizer_config_builder.so",
     srcs = ["pywrap_whitespace_tokenizer_config_builder.cc"],
-    additional_exported_symbols = [
-        "BuildWhitespaceTokenizerConfig",
-    ],
-    copts = ["-fexceptions"],
-    enable_stub_generation = True,
-    features = ["-use_header_modules"],
-    module_name = "pywrap_whitespace_tokenizer_config_builder",
-    pytype_srcs = [
-        "pywrap_whitespace_tokenizer_config_builder.pyi",
-    ],
     deps = [
         "//tensorflow_text/core/kernels:whitespace_tokenizer_config_builder",
-        "@pybind11",
+        "@pybind11//:pybind11",
     ],
+    linkshared = 1,
+    copts = ["-fPIC"],
 )
 
-py_test(
-    name = "pywrap_whitespace_tokenizer_config_builder_test",
-    srcs = ["pywrap_whitespace_tokenizer_config_builder_test.py"],
+py_library(
+    name = "pywrap_whitespace_tokenizer_config_builder",
+    srcs = [],
+    data = [":_pywrap_whitespace_tokenizer_config_builder.so"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "_tflite_registrar.so",
+    srcs = ["tflite_registrar.cc"],
     deps = [
-        ":pywrap_whitespace_tokenizer_config_builder",
-        "@release_or_nightly//:tensorflow_pkg",  # tensorflow package dep
+        "//tensorflow_text/core/kernels:tflite_ops",
+        "@pybind11//:pybind11",
     ],
+    linkshared = 1,
+    copts = ["-fPIC"],
+)
+
+py_library(
+    name = "tflite_registrar",
+    srcs = [],
+    data = [":_tflite_registrar.so"],
+    visibility = ["//visibility:public"],
 )
