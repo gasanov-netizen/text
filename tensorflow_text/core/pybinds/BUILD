@@ -2,6 +2,8 @@ package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
+exports_files(["__init__.py"])
+
 cc_binary(
     name = "_pywrap_fast_bert_normalizer_model_builder.so",
     srcs = ["pywrap_fast_bert_normalizer_model_builder.cc"],

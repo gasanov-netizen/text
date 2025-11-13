@@ -74,6 +74,7 @@ py_library(
         "python/keras/layers/__init__.py",
         "python/metrics/__init__.py",
         "python/numpy/__init__.py",
+        "//tensorflow_text/core/pybinds:__init__.py",
         "python/ops/__init__.py",
         "tools/__init__.py",
     ],

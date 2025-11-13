@@ -81,7 +81,7 @@ setup(
     author_email='packages@tensorflow.org',
     url='http://github.com/tensorflow/text',
     license='Apache 2.0',
-    packages=find_packages(),
+    packages=find_packages() + ['tensorflow_text.core.pybinds'],
     include_package_data=True,
     zip_safe=False,
     cmdclass={'install': InstallPlatlib},
