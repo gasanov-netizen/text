@@ -24,7 +24,7 @@ namespace text {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pywrap_phrase_tokenizer_model_builder, m) {
+PYBIND11_MODULE(_pywrap_phrase_tokenizer_model_builder, m) {
   m.def("build_phrase_model",
         [](const std::vector<std::string>& vocab, const std::string& unk_token,
            bool support_detokenization, int prob, bool split_end_punctuation) {

@@ -23,7 +23,7 @@ namespace text {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pywrap_fast_bert_normalizer_model_builder, m) {
+PYBIND11_MODULE(_pywrap_fast_bert_normalizer_model_builder, m) {
   m.def("build_fast_bert_normalizer_model",
         [](bool lower_case_nfd_strip_accents) {
           const auto result = BuildFastBertNormalizerModelAndExportToFlatBuffer(

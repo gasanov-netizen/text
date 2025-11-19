@@ -24,7 +24,7 @@ namespace sentencepiece {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pywrap_model_converter, m) {
+PYBIND11_MODULE(_pywrap_model_converter, m) {
   m.def("convert_sentencepiece_model", [](py::bytes model_string) {
     return py::bytes(ConvertSentencepieceModel(std::string(model_string)));
   });

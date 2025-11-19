@@ -23,7 +23,7 @@ namespace text {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pywrap_fast_wordpiece_tokenizer_model_builder, m) {
+PYBIND11_MODULE(_pywrap_fast_wordpiece_tokenizer_model_builder, m) {
   m.def("build_fast_wordpiece_model",
         [](const std::vector<std::string>& vocab, int max_bytes_per_token,
            const std::string& suffix_indicator, const std::string& unk_token,

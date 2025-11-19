@@ -64,6 +64,7 @@ def py_tf_text_library(
                 "//conditions:default": ["-pthread"],
             }),
             linkshared = 1,
+            linkstatic = 0, # Added this line
             linkopts = select({
                 "@org_tensorflow//tensorflow:macos": [
                     "-Wl,-exported_symbols_list,$(location //tensorflow_text:exported_symbols.lds)",
@@ -128,7 +129,7 @@ def tf_cc_library(
         alwayslink: If symbols should be exported
     """
     if "kernel" in name:
-        alwayslink = 1
+        alwayslink = 0
 
     # These are "random" deps likely needed by each library (http://b/142433427)
     oss_deps = []
@@ -154,7 +155,7 @@ def tf_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework", # Commented out this line
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + tf_deps + oss_deps,
     })
@@ -167,6 +168,10 @@ def tf_cc_library(
         compatible_with = compatible_with,
         testonly = testonly,
         alwayslink = alwayslink,
+        linkstatic = select({
+            "@org_tensorflow//tensorflow:mobile": 1,
+            "//conditions:default": 0,
+        }), # Added this line
     )
 
 def tflite_cc_library(
@@ -215,7 +220,7 @@ def tflite_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework", # Commented out this line
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + oss_deps,
     })
@@ -228,6 +233,10 @@ def tflite_cc_library(
         compatible_with = compatible_with,
         testonly = testonly,
         alwayslink = alwayslink,
+        linkstatic = select({
+            "@org_tensorflow//tensorflow:mobile": 1,
+            "//conditions:default": 0,
+        }), # Added this line
     )
 
 def extra_py_deps():

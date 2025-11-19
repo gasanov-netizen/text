@@ -23,7 +23,7 @@ namespace text {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(pywrap_whitespace_tokenizer_config_builder, m) {
+PYBIND11_MODULE(_pywrap_whitespace_tokenizer_config_builder, m) {
   m.def("build_whitespace_tokenizer_config",
         []() {
           const auto result = BuildWhitespaceTokenizerConfig();
