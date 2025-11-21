@@ -155,9 +155,9 @@ def tf_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            # "@release_or_nightly//:tensorflow_libtensorflow_framework", # Commented out this line
+            "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
-        ] + tf_deps + oss_deps,
+        ] + oss_deps,
     })
     native.cc_library(
         name = name,
@@ -220,7 +220,7 @@ def tflite_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            # "@release_or_nightly//:tensorflow_libtensorflow_framework", # Commented out this line
+            "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + oss_deps,
     })
