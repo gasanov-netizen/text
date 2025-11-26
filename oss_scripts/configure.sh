@@ -39,17 +39,18 @@ if [[ $(pip show tensorflow) == *tensorflow* ]] ||
 else
   echo 'Installing tensorflow.'
   if [[ "$IS_NIGHTLY" == "nightly" ]]; then
-    pip install tf-nightly
+    # TODO: for debugging only, change back to nightly when needed
+    pip install tensorflow==2.20.0
   else
-    pip install tensorflow==2.19.0
+    pip install tensorflow==2.20.0
   fi
 fi
 
 # Copy the current bazelversion of TF.
-curl https://raw.githubusercontent.com/tensorflow/tensorflow/r2.19/.bazelversion -o .bazelversion
+curl https://raw.githubusercontent.com/tensorflow/tensorflow/r2.20/.bazelversion -o .bazelversion
 
 # Copy the building configuration of TF.
-curl https://raw.githubusercontent.com/tensorflow/tensorflow/r2.19/.bazelrc -o .bazelrc
+curl https://raw.githubusercontent.com/tensorflow/tensorflow/r2.20/.bazelrc -o .bazelrc
 # This line breaks Windows builds, so we remove it.
 sed -i -e 's/build --noincompatible_remove_legacy_whole_archive//' .bazelrc
 

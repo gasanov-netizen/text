@@ -46,7 +46,7 @@ from setuptools.command.install import install
 from setuptools.dist import Distribution
 
 project_name = 'tensorflow-text'
-project_version = '2.19.0'
+project_version = '2.20.0'
 
 
 class BinaryDistribution(Distribution):
@@ -88,12 +88,12 @@ setup(
     distclass=BinaryDistribution,
     install_requires=[
         (
-            'tensorflow>=2.19.0, <2.20',
+            'tensorflow>=2.20.0, <2.21',
         ),
     ],
     extras_require={
         'tensorflow_cpu': [
-            'tensorflow-cpu>=2.19.0, <2.20',
+            'tensorflow-cpu>=2.20.0, <2.21',
         ],
         'tests': [
             'absl-py',

@@ -19,7 +19,8 @@ if [[ $osname != "darwin" ]] || [[ ! $(sysctl -n machdep.cpu.brand_string) =~ "A
 fi
 
 # Build the pip package.
-bazel run ${BUILD_ARGS[@]} --enable_runfiles //oss_scripts/pip_package:build_pip_package -- "$(realpath .)"
+# TODO: remove jobs after debugging
+bazel run --jobs=6 ${BUILD_ARGS[@]} --enable_runfiles //oss_scripts/pip_package:build_pip_package -- "$(realpath .)"
 
 if [ -n "${AUDITWHEEL_PLATFORM}" ]; then
   echo $(date) : "=== Auditing wheel"
