@@ -1,0 +1,4 @@
+# This file makes the directory a Bazel package.
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["protobuf.patch"])

@@ -89,6 +89,20 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.4.1/rules_shell-v0.4.1.tar.gz",
 )
 
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "f645e6e42745ce922ca5388b1883ca583bafe4366cc74cf35c3c9299005136e2",
+    strip_prefix = "protobuf-5.28.3",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/refs/tags/v5.28.3.zip"],
+    patches = ["//oss_scripts:protobuf.patch"],
+    patch_args = ["-p1"],
+    patch_cmds = [
+        "sed -i 's/name[[:space:]]*=[[:space:]]*\"eg\",/name = \"eg\", features = [\"-layering_check\"],/g' src/google/protobuf/compiler/java/full/BUILD.bazel",
+        "sed -i 's/\"names.h\",/\"names.h\", \"generator.h\",/g' src/google/protobuf/compiler/java/BUILD.bazel",
+        "grep \"layering_check\" src/google/protobuf/compiler/java/full/BUILD.bazel || exit 1",
+    ],
+)
+
 # Initialize hermetic Python
 load("@org_tensorflow//third_party/py:python_init_rules.bzl", "python_init_rules")
 
