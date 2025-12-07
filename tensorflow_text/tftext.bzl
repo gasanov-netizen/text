@@ -48,7 +48,8 @@ def py_tf_text_library(
             }),
             alwayslink = 1,
             deps = cc_op_kernels +
-                   [] + # ["@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim"] +
+                   # "@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim",
+            ["//tensorflow_text/core/kernels/shim_override:tf_op_shim"] +
                    select({
                        "@org_tensorflow//tensorflow:mobile": [
                            "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
