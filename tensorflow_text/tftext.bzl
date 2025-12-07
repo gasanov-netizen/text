@@ -198,9 +198,12 @@ def tflite_cc_library(
 
     # Necessary build deps for tflite ops
     tflite_deps = [
-        "@org_tensorflow//tensorflow/core:framework",
-        "@org_tensorflow//tensorflow/core:lib",
+        # "@org_tensorflow//tensorflow/core:framework",
+        # "@org_tensorflow//tensorflow/core:lib",
         "@org_tensorflow//tensorflow/core/util:ragged_to_dense_util_common",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
+        "@org_tensorflow//tensorflow/core/platform:status",
+        "@org_tensorflow//tensorflow/core:framework_headers_lib",
         "@org_tensorflow//tensorflow/lite:framework",
         "@org_tensorflow//tensorflow/lite:mutable_op_resolver",
         "@org_tensorflow//tensorflow/lite/c:common",

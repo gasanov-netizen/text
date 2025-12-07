@@ -78,6 +78,9 @@ py_library(
         "python/ops/__init__.py",
         "tools/__init__.py",
     ],
+    data = [
+        "//tensorflow_text/core/pybinds:pybinds_lib",
+    ],
     deps = [
         ":bert_tokenizer",
         ":boise_offset_converter",

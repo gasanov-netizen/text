@@ -25,7 +25,7 @@
 #include "tensorflow_text/core/kernels/utf8_binarize_tflite.h"
 #include "tensorflow_text/core/kernels/whitespace_tokenizer_tflite.h"
 
-PYBIND11_MODULE(_tflite_registrar, m) {
+PYBIND11_MODULE(tflite_registrar, m) {
   m.doc() = R"pbdoc(
     tflite_registrar
     A module with a Python wrapper for TFLite TFText ops.
