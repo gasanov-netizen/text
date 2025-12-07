@@ -48,7 +48,7 @@ def py_tf_text_library(
             }),
             alwayslink = 1,
             deps = cc_op_kernels +
-                   ["@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim"] +
+                   [] + # ["@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim"] +
                    select({
                        "@org_tensorflow//tensorflow:mobile": [
                            "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
@@ -64,7 +64,7 @@ def py_tf_text_library(
                 "//conditions:default": ["-pthread"],
             }),
             linkshared = 1,
-            linkstatic = 0, # Added this line
+            linkstatic = 1,
             linkopts = select({
                 "@org_tensorflow//tensorflow:macos": [
                     "-Wl,-exported_symbols_list,$(location //tensorflow_text:exported_symbols.lds)",
@@ -155,7 +155,7 @@ def tf_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + oss_deps,
     })
@@ -223,7 +223,7 @@ def tflite_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + oss_deps,
     })
