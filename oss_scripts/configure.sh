@@ -41,12 +41,12 @@ else
   if [[ "$IS_NIGHTLY" == "nightly" ]]; then
     pip install tf-nightly
   else
-    pip install tensorflow==2.18.0
+    pip install tensorflow==2.20.0
   fi
 fi
 
 # Copy the current bazelversion of TF.
-curl https://raw.githubusercontent.com/tensorflow/tensorflow/master/.bazelversion -o .bazelversion
+# curl https://raw.githubusercontent.com/tensorflow/tensorflow/master/.bazelversion -o .bazelversion
 
 # Copy the building configuration of TF.
 curl https://raw.githubusercontent.com/tensorflow/tensorflow/master/.bazelrc -o .bazelrc

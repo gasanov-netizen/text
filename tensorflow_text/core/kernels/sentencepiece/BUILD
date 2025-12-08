@@ -187,6 +187,13 @@ tf_cc_library(
     deps = [
         ":optimized_encoder",
         ":sentencepiece_tokenizer_h",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/log:absl_check",
+        "@com_google_absl//absl/log:absl_log",
+        "@com_google_absl//absl/log:check",
+        "@com_google_absl//absl/utility:if_constexpr",
+        "@com_google_absl//absl/container:btree",
+        "@com_google_absl//absl/container:flat_hash_set",
     ],
 )
 
@@ -200,6 +207,13 @@ tf_cc_library(
     deps = [
         ":optimized_decoder",
         ":sentencepiece_detokenizer_h",
+        "@com_google_absl//absl/base:core_headers",
+        "@com_google_absl//absl/log:absl_check",
+        "@com_google_absl//absl/log:absl_log",
+        "@com_google_absl//absl/log:check",
+        "@com_google_absl//absl/utility:if_constexpr",
+        "@com_google_absl//absl/container:btree",
+        "@com_google_absl//absl/container:flat_hash_set",
         # tf/protobuf:error_codes_proto_impl_cc tensorflow dep,
     ],
 )

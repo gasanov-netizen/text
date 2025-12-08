@@ -89,6 +89,13 @@ main() {
   cp "${runfiles}/org_tensorflow_text/oss_scripts/pip_package/LICENSE" \
       "${temp_dir}"
 
+  # Copy any missing shared objects that weren't in runfiles (e.g. internal cc_libraries)
+  (cd bazel-bin && find tensorflow_text -name "*.so" -o -name "*.dylib") | while read f; do
+    dest="${temp_dir}/$f"
+    mkdir -p "$(dirname "$dest")"
+    cp "bazel-bin/$f" "$dest"
+  done
+
   pushd "${temp_dir}" > /dev/null
 
   if (which python3) | grep -q "python3"; then

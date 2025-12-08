@@ -48,7 +48,8 @@ def py_tf_text_library(
             }),
             alwayslink = 1,
             deps = cc_op_kernels +
-                   ["@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim"] +
+                   # "@org_tensorflow//tensorflow/lite/kernels/shim:tf_op_shim",
+            ["//tensorflow_text/core/kernels/shim_override:tf_op_shim"] +
                    select({
                        "@org_tensorflow//tensorflow:mobile": [
                            "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
@@ -64,6 +65,7 @@ def py_tf_text_library(
                 "//conditions:default": ["-pthread"],
             }),
             linkshared = 1,
+            linkstatic = 1,
             linkopts = select({
                 "@org_tensorflow//tensorflow:macos": [
                     "-Wl,-exported_symbols_list,$(location //tensorflow_text:exported_symbols.lds)",
@@ -128,7 +130,7 @@ def tf_cc_library(
         alwayslink: If symbols should be exported
     """
     if "kernel" in name:
-        alwayslink = 1
+        alwayslink = 0
 
     # These are "random" deps likely needed by each library (http://b/142433427)
     oss_deps = []
@@ -139,14 +141,24 @@ def tf_cc_library(
     oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/time")
     oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/types:variant")
     oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/functional:any_invocable")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/log:check")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/log:log")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/log:absl_check")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/log:absl_log")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/strings")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/container:btree")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/container:flat_hash_set")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/base")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/meta:type_traits")
+    oss_deps = oss_deps + _dedupe(deps, "@com_google_absl//absl/utility:if_constexpr")
     deps += select({
         "@org_tensorflow//tensorflow:mobile": [
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
-        ] + tf_deps + oss_deps,
+        ] + oss_deps,
     })
     native.cc_library(
         name = name,
@@ -157,6 +169,10 @@ def tf_cc_library(
         compatible_with = compatible_with,
         testonly = testonly,
         alwayslink = alwayslink,
+        linkstatic = select({
+            "@org_tensorflow//tensorflow:mobile": 1,
+            "//conditions:default": 0,
+        }), # Added this line
     )
 
 def tflite_cc_library(
@@ -183,9 +199,12 @@ def tflite_cc_library(
 
     # Necessary build deps for tflite ops
     tflite_deps = [
-        "@org_tensorflow//tensorflow/core:framework",
-        "@org_tensorflow//tensorflow/core:lib",
+        # "@org_tensorflow//tensorflow/core:framework",
+        # "@org_tensorflow//tensorflow/core:lib",
         "@org_tensorflow//tensorflow/core/util:ragged_to_dense_util_common",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
+        "@org_tensorflow//tensorflow/core/platform:status",
+        "@org_tensorflow//tensorflow/core:framework_headers_lib",
         "@org_tensorflow//tensorflow/lite:framework",
         "@org_tensorflow//tensorflow/lite:mutable_op_resolver",
         "@org_tensorflow//tensorflow/lite/c:common",
@@ -205,7 +224,7 @@ def tflite_cc_library(
             "@org_tensorflow//tensorflow/core:portable_tensorflow_lib_lite",
         ],
         "//conditions:default": [
-            "@release_or_nightly//:tensorflow_libtensorflow_framework",
+            # "@release_or_nightly//:tensorflow_libtensorflow_framework",
             "@release_or_nightly//:tensorflow_tf_header_lib",
         ] + oss_deps,
     })
@@ -218,6 +237,10 @@ def tflite_cc_library(
         compatible_with = compatible_with,
         testonly = testonly,
         alwayslink = alwayslink,
+        linkstatic = select({
+            "@org_tensorflow//tensorflow:mobile": 1,
+            "//conditions:default": 0,
+        }), # Added this line
     )
 
 def extra_py_deps():

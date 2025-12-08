@@ -46,7 +46,7 @@ from setuptools.command.install import install
 from setuptools.dist import Distribution
 
 project_name = 'tensorflow-text'
-project_version = '2.18.0'
+project_version = '2.20.0'
 
 
 class BinaryDistribution(Distribution):
@@ -81,19 +81,19 @@ setup(
     author_email='packages@tensorflow.org',
     url='http://github.com/tensorflow/text',
     license='Apache 2.0',
-    packages=find_packages(),
+    packages=find_packages() + ['tensorflow_text.core.pybinds'],
     include_package_data=True,
     zip_safe=False,
     cmdclass={'install': InstallPlatlib},
     distclass=BinaryDistribution,
     install_requires=[
         (
-            'tensorflow>=2.18.0, <2.19',
+            'tensorflow==2.20',
         ),
     ],
     extras_require={
         'tensorflow_cpu': [
-            'tensorflow-cpu>=2.18.0, <2.19',
+            'tensorflow-cpu==2.20',
         ],
         'tests': [
             'absl-py',

@@ -74,8 +74,12 @@ py_library(
         "python/keras/layers/__init__.py",
         "python/metrics/__init__.py",
         "python/numpy/__init__.py",
+        "//tensorflow_text/core/pybinds:__init__.py",
         "python/ops/__init__.py",
         "tools/__init__.py",
+    ],
+    data = [
+        "//tensorflow_text/core/pybinds:pybinds_lib",
     ],
     deps = [
         ":bert_tokenizer",
@@ -123,7 +127,7 @@ py_library(
         ":wordpiece_tokenizer",
         ":wordshape_ops",
         # python/util:all_util tensorflow dep,
-        "//tensorflow_text/core/pybinds:tflite_registrar",
+        "//tensorflow_text/core",
         "//tensorflow_text/tools/wordpiece_vocab",
     ] + extra_py_deps(),
 )
